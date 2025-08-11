@@ -1,0 +1,57 @@
+### Java ###
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+
+# H2 Database
+*.mv.db
+*.trace.db
+*.h2.db
+
+### Angular ###
+# Dependencies
+node_modules/
+.cache/
+
+# Build
+dist/
+aot/
+
+# Environment
+.env
+.env.local
+
+### IDE ###
+# IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# Mac
+.DS_Store
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System Files
+Thumbs.db
+ehthumbs.db
