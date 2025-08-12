@@ -1,5 +1,5 @@
 -- Sample Customers
-INSERT INTO Customer (NAME, EMAIL, PHONE) VALUES
+INSERT INTO Customers (NAME, EMAIL, PHONE) VALUES
 ('Acme Corp', 'acme@example.com', '+15551234567'),
 ('Globex Inc', 'contact@globex.com', '+15559876543');
 

@@ -1,0 +1,127 @@
+package ozgur.crmTool.business.concretes;
+
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import ozgur.crmTool.business.abstracts.CustomerService;
+import ozgur.crmTool.business.requests.CreateCustomerRequest;
+import ozgur.crmTool.business.requests.UpdateCustomerRequest;
+import ozgur.crmTool.business.responses.GetActiveCustomersResponse;
+import ozgur.crmTool.business.responses.GetAllCustomersResponse;
+import ozgur.crmTool.business.responses.GetByIDCustomerResponse;
+import ozgur.crmTool.core.utilities.mappers.ModelMapperService;
+import ozgur.crmTool.dataAccess.abstracts.CustomerRepository;
+import ozgur.crmTool.entities.concretes.Customer;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Implementation of CustomerService containing business logic for customer operations.
+ * Handles CRUD operations, data transformation between entities and DTOs,
+ * and manages transaction boundaries for customer data.
+ */
+@Service
+@AllArgsConstructor
+public class CustomerManager implements CustomerService {
+    private CustomerRepository customerRepository;
+    private ModelMapperService modelMapperService;
+
+    /**
+     * Retrieves all customers and maps them to response DTOs.
+     *
+     * @return List of GetAllCustomersResponse containing customer data
+     */
+    @Override
+    @Transactional
+    public List<GetAllCustomersResponse> getAll() {
+        List<Customer> customers = customerRepository.findAll();
+        List<GetAllCustomersResponse> customerResponse = customers.stream()
+                .map(customer->this.modelMapperService.forResponse()
+                        .map(customer,GetAllCustomersResponse.class)).collect(Collectors.toList());
+        return customerResponse;
+    }
+
+    /**
+     * Retrieves only active customers and maps them to specialized response DTOs.
+     *
+     * @return List of GetActiveCustomersResponse with active customer data
+     */
+    @Override
+    @Transactional
+    public List<GetActiveCustomersResponse> getActiveCustomers() {
+        List<Customer> customers = customerRepository.findAllActive();
+        List<GetActiveCustomersResponse> customerResponse = customers.stream()
+                .map(customer->this.modelMapperService.forResponse()
+                        .map(customer,GetActiveCustomersResponse.class)).collect(Collectors.toList());
+        return customerResponse;
+    }
+
+    /**
+     * Finds a customer by ID and maps it to detailed response DTO.
+     *
+     * @param id Customer ID to search for
+     * @return GetByIDCustomerResponse with detailed customer information
+     * @throws RuntimeException if customer not found
+     */
+    @Override
+    @Transactional
+    public GetByIDCustomerResponse getById(int id) {
+        Customer customer = this.customerRepository.findById(id).orElseThrow();
+        GetByIDCustomerResponse customerResponse = this.modelMapperService.forResponse()
+                .map(customer,GetByIDCustomerResponse.class);
+        return customerResponse;
+    }
+
+    /**
+     * Creates a new customer from the provided request DTO.
+     * Uses request mapper for DTO to entity conversion.
+     *
+     * @param createCustomerRequest Contains data for new customer
+     */
+    @Override
+    public void add(CreateCustomerRequest createCustomerRequest) {
+        Customer customer = modelMapperService.forRequest().map(createCustomerRequest, Customer.class);
+        this.customerRepository.save(customer);
+    }
+
+    /**
+     * Updates an existing customer from the provided request DTO.
+     *
+     * @param updateCustomerRequest Contains updated customer data
+     */
+    @Override
+    public void update(UpdateCustomerRequest updateCustomerRequest) {
+        Customer customer = modelMapperService.forRequest().map(updateCustomerRequest, Customer.class);
+        this.customerRepository.save(customer);
+
+    }
+
+    /**
+     * Permanently deletes a customer by ID.
+     *
+     * @param id Customer ID to delete
+     */
+    @Override
+    public void delete(Integer id) {
+        this.customerRepository.deleteById(id);
+    }
+
+    /**
+     * Performs a soft delete by marking customer as inactive.
+     * Maintains the record in database but sets isActive flag to false.
+     *
+     * @param id Customer ID to deactivate
+     * @throws RuntimeException if customer not found
+     */
+
+    @Override
+    @Transactional
+    public void softDeleteCustomer(Integer id) {
+        Customer customer = this.customerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        customer.setActive(false);
+        this.customerRepository.save(customer);
+    }
+
+
+}
