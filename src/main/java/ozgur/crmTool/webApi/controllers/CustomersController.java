@@ -39,7 +39,7 @@ public class CustomersController {
                     @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
                     @ApiResponse(responseCode = "500", description = "Internal server error")
             })
-    @GetMapping("/getall")
+    @GetMapping("/getAll")
     public List<GetAllCustomersResponse> getAll() {
         return customerService.getAll();
     }
@@ -48,7 +48,7 @@ public class CustomersController {
      * Retrieves only active customers
      */
     @Operation(summary = "Get active customers")
-    @GetMapping("/getactive")
+    @GetMapping("/getActive")
     public List<GetActiveCustomersResponse> getActive() {
         return customerService.getActiveCustomers();
     }

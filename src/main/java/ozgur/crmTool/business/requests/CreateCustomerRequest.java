@@ -37,7 +37,7 @@ public class CreateCustomerRequest {
      */
     @Pattern(regexp = "^$|^[+]?[(]?[0-9]{1,4}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4,6}$",
             message = "Invalid phone number format")
-    @Size(max = 100, message = "Phone cannot exceed 20 characters")
+    @Size(max = 20, message = "Phone cannot exceed 20 characters")
     private String phone;
 
     /**

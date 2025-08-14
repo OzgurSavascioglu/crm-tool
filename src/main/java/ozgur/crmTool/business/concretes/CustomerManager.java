@@ -9,9 +9,12 @@ import ozgur.crmTool.business.requests.UpdateCustomerRequest;
 import ozgur.crmTool.business.responses.GetActiveCustomersResponse;
 import ozgur.crmTool.business.responses.GetAllCustomersResponse;
 import ozgur.crmTool.business.responses.GetByIDCustomerResponse;
+import ozgur.crmTool.business.rules.CustomerBusinessRules;
 import ozgur.crmTool.core.utilities.mappers.ModelMapperService;
 import ozgur.crmTool.dataAccess.abstracts.CustomerRepository;
 import ozgur.crmTool.entities.concretes.Customer;
+import ozgur.crmTool.core.utilities.exception.NotFoundException;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,7 @@ import java.util.stream.Collectors;
 public class CustomerManager implements CustomerService {
     private CustomerRepository customerRepository;
     private ModelMapperService modelMapperService;
+    private CustomerBusinessRules customerBusinessRules;
 
     /**
      * Retrieves all customers and maps them to response DTOs.
@@ -80,6 +84,7 @@ public class CustomerManager implements CustomerService {
      */
     @Override
     public void add(CreateCustomerRequest createCustomerRequest) {
+        this.customerBusinessRules.checkIfEmailExists(createCustomerRequest.getEmail());
         Customer customer = modelMapperService.forRequest().map(createCustomerRequest, Customer.class);
         this.customerRepository.save(customer);
     }
@@ -93,7 +98,6 @@ public class CustomerManager implements CustomerService {
     public void update(UpdateCustomerRequest updateCustomerRequest) {
         Customer customer = modelMapperService.forRequest().map(updateCustomerRequest, Customer.class);
         this.customerRepository.save(customer);
-
     }
 
     /**
@@ -118,7 +122,7 @@ public class CustomerManager implements CustomerService {
     @Transactional
     public void softDeleteCustomer(Integer id) {
         Customer customer = this.customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new NotFoundException("Customer not found"));
         customer.setActive(false);
         this.customerRepository.save(customer);
     }
