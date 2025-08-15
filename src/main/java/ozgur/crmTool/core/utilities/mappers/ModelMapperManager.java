@@ -58,4 +58,12 @@ public class ModelMapperManager implements ModelMapperService {
                 .setMatchingStrategy(MatchingStrategies.STANDARD);
         return this.modelMapper;
     }
+
+    @Override
+    public ModelMapper forContact() {
+        this.modelMapper.getConfiguration()
+                .setAmbiguityIgnored(true)
+                .setMatchingStrategy(MatchingStrategies.STRICT);
+        return this.modelMapper;
+    }
 }

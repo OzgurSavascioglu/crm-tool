@@ -1,4 +1,4 @@
-package ozgur.crmTool.business.requests;
+package ozgur.crmTool.business.requests.customer;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

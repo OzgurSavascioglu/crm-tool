@@ -1,4 +1,4 @@
-package ozgur.crmTool.business.responses;
+package ozgur.crmTool.business.responses.customer;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -6,16 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Data Transfer Object (DTO) representing active customer data in API responses.
- * Contains a subset of customer information suitable for listing active customers.
- * Used to control data exposure and optimize payloads for client applications.
+ * Detailed customer response DTO containing complete customer information.
+ * Used for individual customer retrieval operations where full details are required.
+ * Includes audit fields and additional metadata not available in list views.
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetActiveCustomersResponse {
+public class GetByIDCustomerResponse {
     /**
-     * Unique identifier of the customer
+     * Unique customer identifier
      */
     @Schema(description = "Unique database identifier of the customer",
             example = "1025",
@@ -23,7 +23,7 @@ public class GetActiveCustomersResponse {
     private int id;
 
     /**
-     * Full name of the customer
+     * Legal name of the customer
      */
     @Schema(description = "Full legal name of the customer",
             example = "Jane Doe",
@@ -32,7 +32,7 @@ public class GetActiveCustomersResponse {
     private String name;
 
     /**
-     * Contact email address
+     * Primary contact email
      */
     @Schema(description = "Verified email address for communications",
             example = "jane.doe@example.com",
@@ -40,7 +40,7 @@ public class GetActiveCustomersResponse {
     private String email;
 
     /**
-     * Primary contact phone number
+     * Formatted contact number
      */
     @Schema(description = "Primary contact phone number with country code",
             example = "+905551112233",
@@ -48,14 +48,14 @@ public class GetActiveCustomersResponse {
     private String phone;
 
     /**
-     * Physical business address
+     * Complete physical address
      */
     @Schema(description = "Full postal address including city and country",
             example = "123 Business Ave, Istanbul, Turkey")
     private String address;
 
     /**
-     * Associated company name
+     * Registered company name
      */
     @Schema(description = "Legal company name for business customers",
             example = "Acme Corporation",
@@ -64,7 +64,7 @@ public class GetActiveCustomersResponse {
     private String companyName;
 
     /**
-     * Customer classification type
+     * Customer classification category
      */
     @Schema(description = "Business segmentation category",
             example = "PREMIUM",
@@ -73,7 +73,7 @@ public class GetActiveCustomersResponse {
     private String customerType;
 
     /**
-     * Active status flag (always true for this response)
+     * Account status flag
      */
     @Schema(description = "Active status of the customer account",
             example = "true",

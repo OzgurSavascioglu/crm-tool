@@ -4,13 +4,14 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ozgur.crmTool.business.abstracts.CustomerService;
-import ozgur.crmTool.business.requests.CreateCustomerRequest;
-import ozgur.crmTool.business.requests.UpdateCustomerRequest;
-import ozgur.crmTool.business.responses.GetActiveCustomersResponse;
-import ozgur.crmTool.business.responses.GetAllCustomersResponse;
-import ozgur.crmTool.business.responses.GetByIDCustomerResponse;
+import ozgur.crmTool.business.requests.customer.CreateCustomerRequest;
+import ozgur.crmTool.business.requests.customer.UpdateCustomerRequest;
+import ozgur.crmTool.business.responses.customer.GetActiveCustomersResponse;
+import ozgur.crmTool.business.responses.customer.GetAllCustomersResponse;
+import ozgur.crmTool.business.responses.customer.GetByIDCustomerResponse;
 import ozgur.crmTool.business.rules.CustomerBusinessRules;
 import ozgur.crmTool.core.utilities.mappers.ModelMapperService;
+import ozgur.crmTool.core.utilities.validation.CustomerValidationUtility;
 import ozgur.crmTool.dataAccess.abstracts.CustomerRepository;
 import ozgur.crmTool.entities.concretes.Customer;
 import ozgur.crmTool.core.utilities.exception.NotFoundException;
@@ -65,12 +66,13 @@ public class CustomerManager implements CustomerService {
      *
      * @param id Customer ID to search for
      * @return GetByIDCustomerResponse with detailed customer information
-     * @throws RuntimeException if customer not found
+     * @throws NotFoundException if customer not found
      */
     @Override
     @Transactional
     public GetByIDCustomerResponse getById(int id) {
-        Customer customer = this.customerRepository.findById(id).orElseThrow();
+        Customer customer = this.customerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Customer not found"));
         GetByIDCustomerResponse customerResponse = this.modelMapperService.forResponse()
                 .map(customer,GetByIDCustomerResponse.class);
         return customerResponse;
@@ -81,9 +83,11 @@ public class CustomerManager implements CustomerService {
      * Uses request mapper for DTO to entity conversion.
      *
      * @param createCustomerRequest Contains data for new customer
+     * @throws BusinessException if request is not valid
      */
     @Override
     public void add(CreateCustomerRequest createCustomerRequest) {
+        CustomerValidationUtility.validateCreateCustomer(createCustomerRequest);
         this.customerBusinessRules.checkIfEmailExists(createCustomerRequest.getEmail());
         Customer customer = modelMapperService.forRequest().map(createCustomerRequest, Customer.class);
         this.customerRepository.save(customer);
@@ -93,9 +97,11 @@ public class CustomerManager implements CustomerService {
      * Updates an existing customer from the provided request DTO.
      *
      * @param updateCustomerRequest Contains updated customer data
+     * @throws BusinessException if request is not valid
      */
     @Override
     public void update(UpdateCustomerRequest updateCustomerRequest) {
+        CustomerValidationUtility.validateUpdateCustomer(updateCustomerRequest);
         Customer customer = modelMapperService.forRequest().map(updateCustomerRequest, Customer.class);
         this.customerRepository.save(customer);
     }
@@ -115,7 +121,7 @@ public class CustomerManager implements CustomerService {
      * Maintains the record in database but sets isActive flag to false.
      *
      * @param id Customer ID to deactivate
-     * @throws RuntimeException if customer not found
+     * @throws NotFoundException if customer not found
      */
 
     @Override

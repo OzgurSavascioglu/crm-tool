@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * Entity class representing a Customer in the CRM system.
  * Maps to the 'customers' table in the database and contains
@@ -74,6 +76,10 @@ public class Customer {
      * Defaults to true (active) when a new customer is created.
      * Required field.
      */
-    @Column(name="isactive", nullable=false)
+    @Column(name="is_active", nullable=false)
     private boolean isActive=true;
+
+    @OneToMany(mappedBy ="customer")
+    private List<Contact> contacts;
+
 }

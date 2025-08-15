@@ -4,14 +4,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ozgur.crmTool.business.abstracts.CustomerService;
-import ozgur.crmTool.business.requests.CreateCustomerRequest;
-import ozgur.crmTool.business.requests.UpdateCustomerRequest;
-import ozgur.crmTool.business.responses.GetActiveCustomersResponse;
-import ozgur.crmTool.business.responses.GetAllCustomersResponse;
-import ozgur.crmTool.business.responses.GetByIDCustomerResponse;
+import ozgur.crmTool.business.requests.customer.CreateCustomerRequest;
+import ozgur.crmTool.business.requests.customer.UpdateCustomerRequest;
+import ozgur.crmTool.business.responses.customer.GetActiveCustomersResponse;
+import ozgur.crmTool.business.responses.customer.GetAllCustomersResponse;
+import ozgur.crmTool.business.responses.customer.GetByIDCustomerResponse;
 
 import java.util.List;
 

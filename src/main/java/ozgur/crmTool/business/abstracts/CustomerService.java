@@ -1,10 +1,10 @@
 package ozgur.crmTool.business.abstracts;
 
-import ozgur.crmTool.business.requests.CreateCustomerRequest;
-import ozgur.crmTool.business.requests.UpdateCustomerRequest;
-import ozgur.crmTool.business.responses.GetActiveCustomersResponse;
-import ozgur.crmTool.business.responses.GetAllCustomersResponse;
-import ozgur.crmTool.business.responses.GetByIDCustomerResponse;
+import ozgur.crmTool.business.requests.customer.CreateCustomerRequest;
+import ozgur.crmTool.business.requests.customer.UpdateCustomerRequest;
+import ozgur.crmTool.business.responses.customer.GetActiveCustomersResponse;
+import ozgur.crmTool.business.responses.customer.GetAllCustomersResponse;
+import ozgur.crmTool.business.responses.customer.GetByIDCustomerResponse;
 
 import java.util.List;
 

@@ -27,4 +27,6 @@ public interface ModelMapperService {
      * @return Pre-configured ModelMapper instance for request mapping
      */
     ModelMapper forRequest();
+
+    ModelMapper forContact();
 }

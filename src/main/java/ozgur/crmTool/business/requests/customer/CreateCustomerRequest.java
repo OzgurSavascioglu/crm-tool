@@ -1,8 +1,6 @@
-package ozgur.crmTool.business.requests;
+package ozgur.crmTool.business.requests.customer;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,21 +21,12 @@ public class CreateCustomerRequest {
 
     /**
      * Email address of the customer.
-     * Required field with length validation.
-     * Validated for proper email format and required.
      */
-    @NotBlank(message = "Email cannot be empty")
-    @Size(max = 100, message = "Email cannot exceed 100 characters")
-    @Email(message = "Invalid email format")
     private String email;
 
     /**
      * Contact phone number of the customer.
-     * Optional field with format validation when provided.
      */
-    @Pattern(regexp = "^$|^[+]?[(]?[0-9]{1,4}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4,6}$",
-            message = "Invalid phone number format")
-    @Size(max = 20, message = "Phone cannot exceed 20 characters")
     private String phone;
 
     /**
@@ -47,15 +36,11 @@ public class CreateCustomerRequest {
 
     /**
      * Name of the company the customer represents.
-     * Optional field with length validation when provided.
      */
-    @Size(max = 100, message = "Company name cannot exceed 100 characters")
     private String companyName;
 
     /**
      * Type/category of the customer.
-     * Optional field with length validation when provided.
      */
-    @Size(max = 50, message = "Customer type cannot exceed 50 characters")
     private String customerType;
 }

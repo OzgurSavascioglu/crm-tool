@@ -1,4 +1,4 @@
-package ozgur.crmTool.business.responses;
+package ozgur.crmTool.business.responses.customer;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
