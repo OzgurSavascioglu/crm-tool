@@ -82,4 +82,7 @@ public class Customer {
     @OneToMany(mappedBy ="customer")
     private List<Contact> contacts;
 
+    @OneToMany(mappedBy ="customer")
+    private List<Note> notes;
+
 }
