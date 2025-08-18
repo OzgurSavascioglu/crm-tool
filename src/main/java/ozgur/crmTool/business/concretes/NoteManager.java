@@ -18,13 +18,24 @@ import ozgur.crmTool.entities.concretes.Note;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service implementation for managing notes in the CRM tool.
+ * Handles business logic for CRUD operations and validation.
+ */
 @Service
 @AllArgsConstructor
 public class NoteManager implements NoteService {
+    // Data access layer for Note entity
     private NoteRepository noteRepository;
+    // Utility service for mapping between entities and DTOs
     private ModelMapperService modelMapperService;
 
 
+    /**
+     * Retrieves all notes (active + inactive).
+     *
+     * @return List of GetAllNotesResponse DTOs
+     */
     @Override
     public List<GetAllNotesResponse> getAll() {
         List<Note> notes = noteRepository.findAll();
@@ -34,6 +45,11 @@ public class NoteManager implements NoteService {
         return noteResponses;
     }
 
+    /**
+     * Retrieves only active notes.
+     *
+     * @return List of GetActiveNotesResponse DTOs
+     */
     @Override
     public List<GetActiveNotesResponse> getActiveNotes() {
         List<Note> notes = noteRepository.findAllActive();
@@ -43,6 +59,13 @@ public class NoteManager implements NoteService {
         return noteResponses;
     }
 
+    /**
+     * Retrieves a note by its ID.
+     *
+     * @param id Note ID
+     * @return GetByIdNoteResponse DTO
+     * @throws NotFoundException if note does not exist
+     */
     @Override
     public GetByIdNoteResponse getById(int id) {
         Note  note = noteRepository.findById(id)
@@ -52,6 +75,11 @@ public class NoteManager implements NoteService {
         return noteResponse;
     }
 
+    /**
+     * Creates a new note after validating input.
+     *
+     * @param createNoteRequest DTO containing note details
+     */
     @Override
     public void add(CreateNoteRequest createNoteRequest) {
         NoteValidationUtility.validateCreateNote(createNoteRequest);
@@ -62,6 +90,11 @@ public class NoteManager implements NoteService {
         this.noteRepository.save(note);
     }
 
+    /**
+     * Updates an existing note after validation.
+     *
+     * @param updateNoteRequest DTO containing updated note details
+     */
     @Override
     public void update(UpdateNoteRequest updateNoteRequest) {
         NoteValidationUtility.validateUpdateNote(updateNoteRequest);
@@ -70,11 +103,22 @@ public class NoteManager implements NoteService {
         this.noteRepository.save(note);
     }
 
+    /**
+     * Permanently deletes a note by its ID.
+     *
+     * @param id Note ID
+     */
     @Override
     public void delete(int id) {
         this.noteRepository.deleteById(id);
     }
 
+    /**
+     * Performs a soft delete (sets isActive = false) for a note.
+     *
+     * @param id Note ID
+     * @throws NotFoundException if note does not exist
+     */
     @Override
     public void softDeleteNote(int id) {
         Note note = noteRepository.findById(id)

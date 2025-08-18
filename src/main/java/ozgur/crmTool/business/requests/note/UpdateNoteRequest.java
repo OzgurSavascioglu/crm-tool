@@ -4,12 +4,30 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO (Data Transfer Object) class used when updating an existing Note.
+ * This class is part of the request layer, responsible for
+ * receiving data from the client side.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateNoteRequest {
+    /**
+     * Unique identifier for the note.
+     */
     private int id;
+    /**
+     * The ID of the customer this note belongs to.
+     * It will be used to associate the note with a specific customer.
+     */
     private int customerId;
+    /**
+     * The main body/content of the note.
+     */
     private String content;
+    /**
+     * The name or identifier of the author who created the note.
+     */
     private String author;
 }
