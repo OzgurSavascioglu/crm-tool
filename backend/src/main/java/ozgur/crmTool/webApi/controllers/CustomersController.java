@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ozgur.crmTool.business.abstracts.CustomerService;
 import ozgur.crmTool.business.requests.customer.CreateCustomerRequest;
@@ -11,6 +12,7 @@ import ozgur.crmTool.business.requests.customer.UpdateCustomerRequest;
 import ozgur.crmTool.business.responses.customer.GetActiveCustomersResponse;
 import ozgur.crmTool.business.responses.customer.GetAllCustomersResponse;
 import ozgur.crmTool.business.responses.customer.GetByIDCustomerResponse;
+import ozgur.crmTool.business.responses.wrapper.ListResponseWrapper;
 
 import java.util.List;
 
@@ -38,9 +40,15 @@ public class CustomersController {
                     @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
                     @ApiResponse(responseCode = "500", description = "Internal server error")
             })
+//    @GetMapping("/getAll")
+//    public List<GetAllCustomersResponse> getAll() {
+//        return customerService.getAll();
+//    }
+
     @GetMapping("/getAll")
-    public List<GetAllCustomersResponse> getAll() {
-        return customerService.getAll();
+    public ListResponseWrapper<GetAllCustomersResponse> getAll() {
+        List<GetAllCustomersResponse> customers = customerService.getAll();
+        return new ListResponseWrapper<>(true, "Customers successfully retrieved", customers);
     }
 
     /**
