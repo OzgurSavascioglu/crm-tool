@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ContactManager implements ContactService {
     private ContactRepository contactRepository;
-    private CustomerRepository customerRepository;
     private ModelMapperService modelMapperService;
 
     /**

@@ -1,24 +1,44 @@
-<table class="table">
+<div *ngIf="dataLoaded==false" class="spinner-border text-primary" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+
+<div class="d-flex">
+  <input type="text" [(ngModel)]="filterText"
+  class="form-control me-2" id="filterText" placeholder="Enter the type here..." >
+    <button class="btn btn-outline-success" type="submit">Search</button>
+</div>
+<div class="alert alert-success" role="alert" *ngIf="filterText.length>2">
+    {{filterText}} searching results
+</div>
+
+<table *ngIf="dataLoaded==true" class="table">
     <thead>
         <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Name Length</th>
             <th>Email</th>
             <th>Phone</th>
             <th>Address</th>
             <th>Company Name</th>
             <th>Customer Type</th>
             <th>Status</th>
+            <th>Status</th>
         </tr>
     </thead>
-    <tr *ngFor="let customer of customers">
+    <tbody>
+    <tr *ngFor="let customer of customers | filterPipe:filterText">
         <td>{{customer.id}}</td>
         <td>{{customer.name}}</td>
+        <td>{{customer.name | nameLengthAdded}}</td>
         <td>{{customer.email}}</td>
         <td>{{customer.phone}}</td>
         <td>{{customer.address}}</td>
         <td>{{customer.companyName}}</td>
         <td>{{customer.customerType}}</td>
         <td>{{customer.active ? 'Active' : 'Inactive'}}</td>
+        <td><Button (click)="editCustomer(customer)" [routerLink]="['/customers/edit', customer.id]" type="button" class="btn btn-success">Edit customer</Button></td>
+        <td><Button (click)="deleteCustomer(customer)" [routerLink]="['/customers/delete', customer.id]" type="button" class="btn btn-danger">Deactivate customer</Button></td>
     </tr>
+    </tbody>
 </table>

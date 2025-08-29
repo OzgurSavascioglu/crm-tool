@@ -1,7 +1,11 @@
 <ul class="list-group">
-  <li class="list-group-item">An item</li>
-  <li class="list-group-item">A second item</li>
-  <li class="list-group-item">A third item</li>
-  <li class="list-group-item">A fourth item</li>
-  <li class="list-group-item">And a fifth one</li>
+  <li (click)="setCurrentCategory({id:0, name:''})"
+  [class]="getAllCustomersClass()" 
+  routerLink="/customers"
+  >All Customers</li>
+  <li (click)="setCurrentCategory(category)"
+  routerLink="/customers/category/{{category.id}}"
+  *ngFor="let category of categories" 
+  [class]="getCurrentCategoryClass(category)">{{category.name}}
+  </li>
 </ul>

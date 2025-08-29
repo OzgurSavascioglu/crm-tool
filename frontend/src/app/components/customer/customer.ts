@@ -2,6 +2,8 @@ import { Component,OnInit } from '@angular/core';
 import { CustomerModel } from '../../models/customerModel';
 import { HttpClient } from '@angular/common/http';
 import { CustomerResponseModel } from '../../models/customerResponseModel';
+import { CustomerService } from '../../services/customer.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-customer',
@@ -11,19 +13,47 @@ import { CustomerResponseModel } from '../../models/customerResponseModel';
 })
 export class Customer implements OnInit {
   customers: CustomerModel []=[]
-  apiUrl="http://localhost:8080/api/customers/getAll"
-
-  constructor(private httpClient: HttpClient){}
+  dataLoaded=false;
+  filterText: string = "";
+  constructor(private customerService:CustomerService, private activatedRoute:ActivatedRoute){}
 
   ngOnInit():void{
-    this.getCustomers();
+    this.activatedRoute.params.subscribe(params=>{
+      if(params["id"]){
+        if(params["id"]==5){
+          this.getActiveCustomers();
+        }else{
+          this.getCustomers();
+        }
+      }
+      
+      else{
+        this.getCustomers();
+      }
+    })
   }
 
+
+
   getCustomers(){
-    this.httpClient
-    .get<CustomerResponseModel>(this.apiUrl)
-    .subscribe(response=>{
+    this.customerService.getCustomers().subscribe(response=>{
       this.customers=response.data
+      this.dataLoaded=true;
     })
+  }
+
+  getActiveCustomers(){
+    this.customerService.getActiveCustomers().subscribe(response=>{
+      this.customers=response.data
+      this.dataLoaded=true;
+    })
+  }
+
+  editCustomer(customer:CustomerModel){
+    console.log(customer);
+
+  }
+  deleteCustomer(customer:CustomerModel){
+    console.log(customer);
   }
 }

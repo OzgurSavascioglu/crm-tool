@@ -20,6 +20,7 @@ import java.util.List;
  * REST API controller for customer management operations.
  * Provides endpoints for CRUD operations and customer status management.
  */
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/customers")
 public class CustomersController {
@@ -56,8 +57,10 @@ public class CustomersController {
      */
     @Operation(summary = "Get active customers")
     @GetMapping("/getActive")
-    public List<GetActiveCustomersResponse> getActive() {
-        return customerService.getActiveCustomers();
+    public ListResponseWrapper<GetActiveCustomersResponse> getActive() {
+        List<GetActiveCustomersResponse> customers = customerService.getActiveCustomers();
+        return new ListResponseWrapper<>(true, "Customers successfully retrieved", customers);
+        //return customerService.getActiveCustomers();
     }
 
     /**
@@ -75,7 +78,7 @@ public class CustomersController {
     @Operation(summary = "Create new customer")
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public void add(CreateCustomerRequest createCustomerRequest) {
+    public void add(@RequestBody CreateCustomerRequest createCustomerRequest) {
         this.customerService.add(createCustomerRequest);
     }
 
@@ -84,7 +87,7 @@ public class CustomersController {
      */
     @Operation(summary = "Update customer")
     @PutMapping("/update")
-    public void update(UpdateCustomerRequest updateCustomerRequest) {
+    public void update(@RequestBody UpdateCustomerRequest updateCustomerRequest) {
         this.customerService.update(updateCustomerRequest);
     }
 
